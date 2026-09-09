@@ -172,9 +172,9 @@ No registration, personal account, financial-product recommendations, or externa
 
 ## Live Application
 
-Deployment through Vercel from this GitHub repository is intended.
+The application is deployed on Vercel from this GitHub repository.
 
-**Live URL:https://goalbridge-investment-planner.vercel.app
+**Live URL:** [Open GoalBridge](https://goalbridge-investment-planner.vercel.app)
 
 **Repository:** [SudhirSharrma/goalbridge-investment-planner](https://github.com/SudhirSharrma/goalbridge-investment-planner)
 
