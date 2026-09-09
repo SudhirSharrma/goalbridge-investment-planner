@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GoalBridge — an educational goal-based investment planner.">
+    <title>GoalBridge – Goal-Based Investment Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+</head>
+<body>
+    <!-- Header / Hero -->
+    <header class="hero">
+        <p class="brand-name">GoalBridge</p>
+        <h1>Turn your future goals into a monthly plan</h1>
+        <p class="hero-subheading">Educational Goal-Based Investment Planner</p>
+    </header>
 
+    <main id="main-content">
+        <form id="goal-planning-form" class="planning-form">
+            <!-- Goal Input Section -->
+            <section class="goal-inputs" aria-labelledby="goal-heading">
+                <h2 id="goal-heading">Your Goal</h2>
+                <div class="form-field">
+                    <label for="goal-name">Goal Name</label>
+                    <input type="text" id="goal-name" name="goalName" value="Higher Education Fund" required>
+                </div>
+                <div class="form-field">
+                    <label for="goal-amount">Goal Amount Today (₹)</label>
+                    <input type="number" id="goal-amount" name="goalAmount" value="1200000" min="0.01" max="1000000000000" step="0.01" required>
+                </div>
+                <div class="form-field">
+                    <label for="current-savings">Current Savings (₹)</label>
+                    <input type="number" id="current-savings" name="currentSavings" value="150000" min="0" max="1000000000000" step="0.01" required>
+                </div>
+            </section>
+
+            <!-- Planning Assumptions Section -->
+            <section class="planning-assumptions" aria-labelledby="assumptions-heading">
+                <h2 id="assumptions-heading">Planning Assumptions</h2>
+                <div class="form-field">
+                    <label for="years-to-goal">Years to Goal</label>
+                    <input type="number" id="years-to-goal" name="yearsToGoal" value="8" min="1" max="100" step="1" required>
+                </div>
+                <div class="form-field">
+                    <label for="annual-inflation">Expected Annual Inflation (%)</label>
+                    <input type="number" id="annual-inflation" name="annualInflation" value="6" min="0" max="100" step="0.1" required>
+                </div>
+                <div class="form-field">
+                    <label for="annual-return">Expected Annual Investment Return (%)</label>
+                    <input type="number" id="annual-return" name="annualReturn" value="10" min="0" max="100" step="0.1" required>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+                <button type="submit" id="calculate-plan" class="button-primary">
+                    Calculate My Plan
+                </button>
+                <button type="reset" id="reset-plan" class="button-secondary">Reset</button>
+            </div>
+        </form>
+
+        <!-- Results Section -->
+        <section id="goal-results" class="goal-results" aria-labelledby="results-heading">
+            <h2 id="results-heading">Your Goal Plan</h2>
+            <dl class="result-cards">
+                <div class="result-card">
+                    <dt>Future Goal Cost</dt>
+                    <dd id="future-goal-cost">₹0</dd>
+                </div>
+                <div class="result-card">
+                    <dt>Future Value of Current Savings</dt>
+                    <dd id="future-savings-value">₹0</dd>
+                </div>
+                <div class="result-card">
+                    <dt>Funding Gap</dt>
+                    <dd id="funding-gap">₹0</dd>
+                </div>
+                <div class="result-card">
+                    <dt>Monthly Contribution Required</dt>
+                    <dd id="monthly-contribution">₹0</dd>
+                </div>
+                <div class="result-card">
+                    <dt>Total Monthly Contributions</dt>
+                    <dd id="total-monthly-contributions">₹0</dd>
+                </div>
+                <div class="result-card">
+                    <dt>Projected Growth</dt>
+                    <dd id="projected-growth">₹0</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- Funding Visualisation Section -->
+        <section id="funding-visualisation" class="funding-visualisation" aria-labelledby="funding-heading">
+            <div class="funding-heading-row">
+                <h2 id="funding-heading">FUNDING VISUALISATION</h2>
+                <p>How your goal may be funded in the future (₹).</p>
+            </div>
+            <div class="funding-layout">
+                <dl class="funding-breakdown">
+                    <div id="funding-savings" class="funding-component">
+                        <dt>Future Value of Existing Savings</dt>
+                        <dd class="funding-bar-value">
+                            <span id="funding-savings-bar" class="funding-track" role="img" aria-label="Future Value of Existing Savings: ₹0.00, 0 percent of future goal cost.">
+                                <span id="funding-savings-fill" class="funding-fill" aria-hidden="true"></span>
+                            </span>
+                            <span id="funding-savings-value" class="funding-amount">₹0.00</span>
+                        </dd>
+                    </div>
+                    <div id="funding-contributions" class="funding-component">
+                        <dt>Monthly Contributions</dt>
+                        <dd class="funding-bar-value">
+                            <span id="funding-contributions-bar" class="funding-track" role="img" aria-label="Monthly Contributions: ₹0.00, 0 percent of future goal cost.">
+                                <span id="funding-contributions-fill" class="funding-fill" aria-hidden="true"></span>
+                            </span>
+                            <span id="funding-contributions-value" class="funding-amount">₹0.00</span>
+                        </dd>
+                    </div>
+                    <div id="funding-growth" class="funding-component">
+                        <dt>Projected Investment Growth</dt>
+                        <dd class="funding-bar-value">
+                            <span id="funding-growth-bar" class="funding-track" role="img" aria-label="Projected Investment Growth: ₹0.00, 0 percent of future goal cost.">
+                                <span id="funding-growth-fill" class="funding-fill" aria-hidden="true"></span>
+                            </span>
+                            <span id="funding-growth-value" class="funding-amount">₹0.00</span>
+                        </dd>
+                    </div>
+                </dl>
+                <div class="funding-total" aria-live="polite" aria-atomic="true">
+                    <p>Total</p>
+                    <p id="funding-goal-total" class="funding-total-value">₹0.00</p>
+                    <p class="funding-total-caption">(Future Goal Cost)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plain-Language Summary Section -->
+        <section class="plan-summary" aria-labelledby="summary-heading">
+            <h2 id="summary-heading">Your Plan</h2>
+            <p id="plan-summary" aria-live="polite">Enter your assumptions and calculate your plan to see your personalised goal summary.</p>
+        </section>
+
+        <!-- Scenario Exploration Section -->
+        <section class="scenario-exploration" aria-labelledby="scenario-heading">
+            <h2 id="scenario-heading">Try Another Scenario</h2>
+            <p>Change the goal period, inflation, expected return or existing savings and recalculate to see how these assumptions affect your plan.</p>
+        </section>
+
+        <!-- Educational Disclaimer -->
+        <section class="educational-disclaimer" aria-labelledby="disclaimer-heading">
+            <h2 id="disclaimer-heading">Educational Disclaimer</h2>
+            <p>Results are illustrative estimates based on assumptions entered by the user. Actual inflation, investment returns and goal costs may vary. GoalBridge does not provide investment advice, recommend financial products or guarantee returns.</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p class="brand-name">GoalBridge</p>
+        <p>Educational Goal-Based Investment Planner</p>
+    </footer>
+</body>
+</html>
