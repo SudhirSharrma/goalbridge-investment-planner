@@ -17,7 +17,17 @@
     </header>
 
     <main id="main-content">
+        <!-- Last successful calculation: print-only input snapshot -->
+        <section id="print-plan-details" class="print-only" hidden aria-labelledby="print-plan-heading">
+            <h2 id="print-plan-heading">Goal Planning Summary</h2>
+            <dl id="print-inputs" class="print-inputs"></dl>
+        </section>
         <form id="goal-planning-form" class="planning-form">
+            <div id="scenario-mode" class="scenario-mode" hidden>
+                <h2 id="scenario-mode-heading">Creating Alternative Scenario</h2>
+                <p>Change one or more planning assumptions below, then click Calculate Alternative Scenario. The goal name stays the same as the Base Plan.</p>
+                <div class="enhancement-actions"><button id="cancel-alternative" type="button" class="button-secondary">Cancel Alternative Scenario</button></div>
+            </div>
             <!-- Goal Input Section -->
             <section class="goal-inputs" aria-labelledby="goal-heading">
                 <h2 id="goal-heading">Your Goal</h2>
@@ -142,10 +152,43 @@
             <p id="plan-summary" aria-live="polite">Enter your assumptions and calculate your plan to see your personalised goal summary.</p>
         </section>
 
-        <!-- Scenario Exploration Section -->
+        <div id="print-actions" class="enhancement-actions" hidden>
+            <button type="button" id="print-plan" class="button-primary">Print / Save Plan</button>
+            <p>Use your browser’s Print → Save as PDF option to save the last calculated plan.</p>
+        </div>
+
+        <!-- Explicit, session-only scenario comparison -->
         <section class="scenario-exploration" aria-labelledby="scenario-heading">
             <h2 id="scenario-heading">Try Another Scenario</h2>
-            <p>Change the goal period, inflation, expected return or existing savings and recalculate to see how these assumptions affect your plan.</p>
+            <p>Save a Base Plan, then create up to two alternatives for the same goal. Ordinary calculations update the main results without replacing saved scenarios.</p>
+            <p id="comparison-status" role="status">Calculate a plan to establish your Base Plan.</p>
+            <div class="enhancement-actions scenario-controls">
+                <button type="button" id="create-alternative" class="button-primary" aria-describedby="comparison-status" hidden>+ Create Alternative Scenario</button>
+                <button type="button" id="reset-comparison" class="button-secondary">Reset Comparisons</button>
+            </div>
+            <div id="scenario-funding-cards" class="scenario-funding-cards" hidden></div>
+            <div id="comparison-content" hidden>
+                <h2>Compare Your Scenarios</h2>
+                <div class="comparison-graphs">
+                    <section class="comparison-graph" aria-labelledby="monthly-chart-heading">
+                        <h3 id="monthly-chart-heading">Estimated Monthly Contribution</h3>
+                        <p>Bars share a scale within this chart; amounts are per month.</p>
+                        <dl id="monthly-comparison-chart"></dl>
+                    </section>
+                    <section class="comparison-graph" aria-labelledby="gap-chart-heading">
+                        <h3 id="gap-chart-heading">Estimated Funding Gap</h3>
+                        <p>Bars share a scale within this chart; amounts are total funding gaps.</p>
+                        <dl id="gap-comparison-chart"></dl>
+                    </section>
+                </div>
+                <table class="comparison-table" role="table">
+                    <caption>Planning assumptions and estimated results</caption>
+                    <thead role="rowgroup"><tr id="comparison-columns" role="row"></tr></thead>
+                    <tbody id="comparison-rows" role="rowgroup"></tbody>
+                </table>
+                <h3>Understanding the differences</h3>
+                <div id="comparison-explanation"></div>
+            </div>
         </section>
 
         <!-- Educational Disclaimer -->
@@ -160,5 +203,23 @@
         <p class="brand-name">GoalBridge</p>
         <p>Educational Goal-Based Investment Planner</p>
     </footer>
+    <!-- Print selection is separate from the calculator and saved comparisons. -->
+    <dialog id="print-options" aria-labelledby="print-options-heading" aria-describedby="print-options-description">
+        <h2 id="print-options-heading">Print / Save Your Plan</h2>
+        <p id="print-options-description">Choose the saved scenarios you want to include. Only selected scenarios will be printed.</p>
+        <form id="print-options-form">
+            <fieldset>
+                <legend>Available scenarios</legend>
+                <div id="print-scenario-options"></div>
+            </fieldset>
+            <p id="print-selection-error" role="alert"></p>
+            <div class="enhancement-actions">
+                <button id="select-all-print" type="button" class="button-secondary">Select All Available Scenarios</button>
+                <button id="print-selected" type="submit" class="button-primary">Print Selected</button>
+                <button id="cancel-print" type="button" class="button-secondary">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <section id="selected-print-report" class="print-only" hidden aria-label="Selected goal planning report"></section>
 </body>
 </html>

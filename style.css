@@ -476,3 +476,136 @@ h2 {
 }
 
 /* Motion is intentionally omitted, including for reduced-motion users. */
+/* Scenario comparison and print actions */
+[hidden] { display: none !important; }
+.print-only { display: none; }
+.enhancement-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-top: var(--space-4); }
+.enhancement-actions p { color: var(--color-muted); font-size: 0.9375rem; }
+.enhancement-actions button { min-height: 3rem; padding: 0.6875rem var(--space-4); border: 1px solid var(--color-input-border); border-radius: var(--radius-input); font: inherit; font-weight: 650; cursor: pointer; }
+.enhancement-actions .button-secondary { background: var(--color-surface); color: var(--color-text); }
+.enhancement-actions button:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.scenario-exploration { padding: var(--card-padding); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
+#comparison-status { margin-top: var(--space-3); }
+.comparison-table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-block: var(--space-4); font-variant-numeric: tabular-nums; }
+.comparison-table caption { text-align: left; font-weight: 650; margin-bottom: var(--space-3); }
+.comparison-table th, .comparison-table td { padding: var(--space-2); text-align: left; vertical-align: top; border-bottom: 1px solid var(--color-border); overflow-wrap: anywhere; }
+.comparison-table thead { background: var(--color-subtle); }
+.comparison-table tbody th { font-weight: 550; }
+.comparison-mobile-label { display: none; }
+@media (max-width: 599px) {
+    .comparison-table, .comparison-table tbody, .comparison-table tr, .comparison-table th, .comparison-table td { display: block; width: 100%; }
+    .comparison-table caption { display: block; width: 100%; }
+    .comparison-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .comparison-table tbody tr { margin-bottom: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-input); }
+    .comparison-table tbody th { background: var(--color-subtle); }
+    .comparison-mobile-label { display: block; color: var(--color-muted); font-size: 0.875rem; }
+    .enhancement-actions button { width: 100%; }
+}
+/* Native Print / Save as PDF: last calculated inputs, results and explanation */
+@media print {
+    @page { margin: 15mm; }
+    body { background: white; color: black; font-size: 10pt; }
+    .hero, main, .site-footer { width: 100%; margin-inline: 0; }
+    .hero { padding: 0 0 1rem; }
+    .hero h1, .hero-subheading, .planning-form, .enhancement-actions, #comparison-status, .scenario-exploration > h2, .scenario-exploration > p { display: none !important; }
+    .print-only:not([hidden]) { display: block; }
+    main { display: block; }
+    main > section { margin-bottom: 1rem; padding: 0.75rem; box-shadow: none; }
+    .print-inputs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 1rem; }
+    .print-inputs dt { font-weight: 650; }
+    .result-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .result-card, .print-inputs > div, .funding-component, .comparison-table tr { break-inside: avoid; }
+    .result-card dd, #monthly-contribution { font-size: 14pt; }
+    .plan-summary, .educational-disclaimer { background: white; color: black; }
+    .scenario-exploration:has(#comparison-content[hidden]) { display: none; }
+    .comparison-table { display: table; font-size: 9pt; }
+    .comparison-table caption { display: table-caption; }
+    .comparison-table thead { display: table-header-group; position: static; width: auto; height: auto; clip-path: none; overflow: visible; }
+    .comparison-table tbody { display: table-row-group; }
+    .comparison-table tr { display: table-row; }
+    .comparison-table th, .comparison-table td { display: table-cell; width: auto; }
+    .comparison-mobile-label { display: none; }
+    h2, .comparison-table caption { break-after: avoid; }
+    p { orphans: 3; widows: 3; }
+    .site-footer { padding-block: 0.5rem; }
+}
+
+/* Explicit scenario creation, saved funding cards and comparison charts */
+.scenario-mode { grid-column: 1 / -1; padding: var(--space-4); border: 1px solid var(--color-blue); border-radius: var(--radius-card); background: var(--color-blue-light); }
+.scenario-mode h2 { margin-bottom: var(--space-2); }
+.form-field input[readonly] { background: var(--color-subtle); }
+.enhancement-actions button:disabled { background: var(--color-subtle); color: var(--color-muted); border-color: var(--color-border); cursor: not-allowed; opacity: 0.8; }
+.scenario-funding-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--space-3); margin-block: var(--space-4); }
+.scenario-funding-card, .comparison-graph { min-width: 0; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); }
+.scenario-funding-card h3, .comparison-graph h3 { margin: 0 0 var(--space-2); font-size: 1.0625rem; overflow-wrap: anywhere; }
+.scenario-goal-name, .scenario-note, .comparison-graph > p { color: var(--color-muted); font-size: 0.9375rem; }
+.scenario-funding-card dl > div { margin-top: var(--space-3); }
+.scenario-funding-card dt { font-size: 0.9375rem; margin-bottom: var(--space-1); }
+.scenario-funding-card .funding-amount, .comparison-chart-row .funding-amount { display: block; margin-top: var(--space-1); }
+.scenario-total { border-top: 1px solid var(--color-border); padding-top: var(--space-3); }
+.scenario-funding-card .enhancement-actions button { font-size: 0.9375rem; width: 100%; overflow-wrap: anywhere; }
+.comparison-graphs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.comparison-chart-row { margin-top: var(--space-3); }
+.comparison-chart-row dt { margin-bottom: var(--space-1); font-weight: 550; }
+#comparison-content { margin-top: var(--space-5); }
+#comparison-explanation p + p { margin-top: var(--space-3); }
+@media (max-width: 599px) {
+    .comparison-graphs { grid-template-columns: minmax(0, 1fr); }
+}
+@media print {
+    .scenario-controls, .scenario-mode { display: none !important; }
+    .scenario-funding-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .scenario-funding-card, .comparison-graph, .comparison-chart-row { break-inside: avoid; }
+    .comparison-graphs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .funding-fill { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .scenario-funding-card, .comparison-graph { padding: 0.6rem; }
+    #comparison-content > h2, #comparison-content > h3 { break-after: avoid; }
+}
+/* Keep printed funding totals readable and scenario cards together. */
+@media print {
+    .funding-visualisation, .plan-summary, .educational-disclaimer, #comparison-explanation p { break-inside: avoid; }
+    .funding-layout { grid-template-columns: minmax(0, 7fr) minmax(0, 3fr); }
+    .funding-total-value { font-size: 12pt; }
+    .result-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .result-card dd, #monthly-contribution { font-size: 12pt; }
+    .scenario-funding-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .scenario-funding-card h3 { font-size: 10pt; }
+    .scenario-funding-card dt, .scenario-goal-name, .scenario-note { font-size: 9pt; }
+    .scenario-funding-card dl > div { margin-top: 0.5rem; }
+    .scenario-exploration { border: 0; padding: 0; }
+}
+
+/* Native print-selection dialog; no changes to calculator layout. */
+#print-options { width: min(32rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); overflow: auto; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-card); color: var(--color-text); background: var(--color-surface); }
+#print-options::backdrop { background: rgb(20 30 45 / 45%); }
+#print-options fieldset { margin: var(--space-4) 0 0; padding: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-input); min-width: 0; }
+#print-options legend { font-weight: 650; }
+.print-scenario-option { display: flex; align-items: center; gap: var(--space-2); min-height: 2.75rem; cursor: pointer; }
+.print-scenario-option input { flex: 0 0 auto; width: 1.125rem; height: 1.125rem; accent-color: var(--color-blue); }
+.print-scenario-option input:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+#print-selection-error { margin-top: var(--space-2); font-weight: 600; }
+@media print {
+    #print-options { display: none !important; }
+    body.printing-selected > :not(#selected-print-report) { display: none !important; }
+    body.printing-selected #selected-print-report { display: block; width: 100%; }
+    #selected-print-report > header { margin-bottom: 1rem; }
+    #selected-print-report h1 { font-size: 18pt; margin-block: 0.5rem; }
+    .selected-plan-summary { break-inside: avoid; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-card); }
+    .selected-plan-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem 1rem; font-size: 9pt; }
+    .selected-plan-details dt { font-weight: 600; }
+    .selected-plan-details > div { break-inside: avoid; }
+    .selected-funding { margin-block: 0.75rem; }
+    .selected-funding .scenario-funding-card { padding: 0.5rem; }
+    .selected-funding .scenario-funding-card > h3, .selected-funding .scenario-goal-name { display: none; }
+    .selected-funding dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 1rem; }
+    .selected-funding .scenario-total { padding-top: 0; border: 0; }
+    .selected-plan-summary > p { font-size: 9pt; }
+    .selected-plan-summary h3 { font-size: 11pt; margin-block: 0.5rem; }
+    .selected-comparison { margin-block: 1rem; }
+    .selected-comparison .comparison-graph { break-inside: avoid; }
+    .selected-interpretation p { break-inside: avoid; margin-bottom: 0.75rem; }
+}
+@media print {
+    .selected-comparison > h2, .selected-comparison > h3 { break-after: avoid; }
+    .selected-interpretation { break-inside: avoid; }
+}
